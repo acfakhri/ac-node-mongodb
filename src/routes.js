@@ -1,7 +1,28 @@
 // routes.js
 const express = require('express');
 const router = express.Router();
-const UserModels = require('./models');
+const UserModels = require('./models/UserModels');
+const multer = require("multer")
+
+//CONTROLLER
+const productController = require('./controllers/ProductControllers')
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, 'images/products'); // Simpan file di folder 'uploads'
+    },
+    filename: function(req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname); // Nama file yang diunggah
+    }
+  });
+  const upload = multer({ storage: storage });
+  
+router.get('/products', productController.viewProducts);
+router.post('/products', upload.single('image'), productController.addProducts);
+router.get('/products/:id', productController.detailProducts);
+router.put('/products/:id', upload.single('image'), productController.updateProducts);
+router.delete('/products/:id', productController.deleteProducts);
+
 
 // CREATE
 router.post('/users', async (req, res) => {
