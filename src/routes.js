@@ -4,6 +4,10 @@ const router = express.Router();
 const UserModels = require('./models/UserModels');
 const multer = require("multer")
 
+const authController = require('./controllers/authController');;
+router.post('/login', authController.login);
+router.post('/register', authController.register);
+
 //CONTROLLER
 const productController = require('./controllers/ProductControllers')
 
